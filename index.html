@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NEON PINBALL // Arcade 2D</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+</head>
+<body>
+  <div class="arcade-shell">
+    <!-- Top HUD -->
+    <header class="hud" aria-label="Marcador">
+      <div class="hud-block hud-score">
+        <span class="hud-label">PUNTOS</span>
+        <span class="hud-value" id="score-display">000000</span>
+      </div>
+
+      <div class="hud-block hud-mult">
+        <span class="hud-label">COMBO</span>
+        <div class="mult-row">
+          <span class="hud-value mult-value" id="mult-display">x1</span>
+          <div class="combo-bar-track" aria-hidden="true">
+            <div class="combo-bar-fill" id="combo-bar"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud-block hud-best">
+        <span class="hud-label">RÉCORD</span>
+        <span class="hud-value best-value" id="best-display">000000</span>
+      </div>
+
+      <div class="hud-block hud-right">
+        <div class="balls-group" aria-label="Bolas restantes">
+          <span class="hud-label">BOLAS</span>
+          <div class="ball-dots" id="balls-display">
+            <span class="ball-dot active"></span>
+            <span class="ball-dot active"></span>
+            <span class="ball-dot active"></span>
+          </div>
+        </div>
+        <button id="mute-btn" class="mute-btn" type="button" title="Silenciar / Activar sonido (M)" aria-label="Silenciar sonido">
+          <span class="mute-icon" id="mute-icon">🔊</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Pinball Stage -->
+    <main class="stage-wrap">
+      <div class="cabinet-frame">
+        <canvas id="pinball-canvas" width="480" height="820"></canvas>
+
+        <!-- Start Overlay -->
+        <section class="overlay" id="start-overlay" aria-label="Pantalla de inicio">
+          <div class="overlay-card">
+            <div class="badge-neon">ARCADE EDITION</div>
+            <h1 class="game-title">
+              <span class="title-cyan">NEON</span>
+              <span class="title-magenta">PINBALL</span>
+            </h1>
+            <p class="overlay-subtitle">
+              Ilumina los 3 objetivos superiores para multiplicar tu puntuación y encadena combos en los bumpers.
+            </p>
+            <div class="overlay-controls">
+              <div class="ctrl-item">
+                <kbd>A</kbd> / <kbd>←</kbd>
+                <span>Flipper Izq</span>
+              </div>
+              <div class="ctrl-item">
+                <kbd>D</kbd> / <kbd>→</kbd>
+                <span>Flipper Der</span>
+              </div>
+              <div class="ctrl-item">
+                <kbd>Espacio</kbd>
+                <span>Mantén y suelta</span>
+              </div>
+            </div>
+            <div class="overlay-best" id="start-best-wrap">
+              RÉCORD ACTUAL: <strong id="start-best-val">0</strong>
+            </div>
+            <button id="start-btn" class="cta-btn" type="button">JUGAR</button>
+            <span class="cta-hint">o presiona <kbd>Espacio</kbd> / <kbd>Enter</kbd></span>
+          </div>
+        </section>
+
+        <!-- Game Over Overlay -->
+        <section class="overlay hidden" id="gameover-overlay" aria-label="Fin de la partida">
+          <div class="overlay-card gameover-card">
+            <div class="badge-neon badge-amber" id="new-record-badge">¡NUEVO RÉCORD!</div>
+            <h2 class="gameover-title">GAME OVER</h2>
+
+            <div class="stats-grid">
+              <div class="stat-box">
+                <span class="stat-label">PUNTUACIÓN</span>
+                <span class="stat-val cyan" id="final-score">0</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">RÉCORD</span>
+                <span class="stat-val amber" id="final-best">0</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">MEJOR COMBO</span>
+                <span class="stat-val magenta" id="final-combo">0</span>
+              </div>
+              <div class="stat-box">
+                <span class="stat-label">MULT. MÁX</span>
+                <span class="stat-val cyan" id="final-mult">x1</span>
+              </div>
+            </div>
+
+            <button id="restart-btn" class="cta-btn" type="button">JUGAR DE NUEVO</button>
+            <span class="cta-hint">Reinicio instantáneo: <kbd>Espacio</kbd> / <kbd>Enter</kbd></span>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- Discreet On-Screen Key Indicator -->
+    <footer class="controls-bar" aria-label="Controles">
+      <div class="key-pill" id="key-left" data-action="left">
+        <kbd>A</kbd><kbd>←</kbd><span>Izq</span>
+      </div>
+      <div class="key-pill key-space" id="key-space" data-action="launch">
+        <kbd>Espacio</kbd><span>Resorte</span>
+      </div>
+      <div class="key-pill" id="key-right" data-action="right">
+        <kbd>D</kbd><kbd>→</kbd><span>Der</span>
+      </div>
+      <div class="key-pill key-mute" id="key-mute" data-action="mute">
+        <kbd>M</kbd><span>Audio</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
